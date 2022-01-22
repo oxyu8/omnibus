@@ -21,7 +21,7 @@ const config = {
   port: 6379,
 };
 
-app.listen(3000, () => {
+app.listen(3001, () => {
   console.log("Start on port 3000.");
 });
 
