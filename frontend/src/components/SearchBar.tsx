@@ -1,11 +1,25 @@
 import styles from "../styles/components/SearchBar.module.scss";
 
-export const SearchBar = () => {
+type Props = {
+  query: string;
+  onChangeQuery: (e: any) => void;
+  onClickBtn: (e: any) => void;
+};
+
+export const SearchBar: React.FC<Props> = ({
+  query,
+  onChangeQuery,
+  onClickBtn,
+}) => {
   return (
     <>
       <form>
-        <input className={styles.input} />
-        <button className={styles.button} type="submit">
+        <input
+          className={styles.input}
+          value={query}
+          onChange={onChangeQuery}
+        />
+        <button className={styles.button} type="submit" onClick={onClickBtn}>
           検索
         </button>
       </form>
