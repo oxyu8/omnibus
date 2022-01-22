@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import Head from "next/head";
 import axios from "axios";
 import { SearchBar } from "../components/SearchBar";

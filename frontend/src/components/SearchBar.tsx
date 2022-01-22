@@ -1,4 +1,3 @@
-import { MouseEventHandler } from "react";
 import styles from "../styles/components/SearchBar.module.scss";
 
 type Props = {
