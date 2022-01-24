@@ -22,7 +22,7 @@ const config = {
 };
 
 app.listen(3001, () => {
-  console.log("Start on port 3000.");
+  console.log("Start on port 3001.");
 });
 
 const fetchResult = async (query: string) => {

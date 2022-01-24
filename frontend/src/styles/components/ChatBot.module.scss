@@ -1,0 +1,28 @@
+.container {
+  background-color: #f5f6f8;
+  width: 500px;
+}
+
+.replyButtonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.answerButton {
+  background-color: skyblue;
+  border-color: white;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.chatbotTextContainer {
+  display: flex;
+  align-items:center,
+}
+
+.chatbotText {
+  padding-left: 10px;
+}
