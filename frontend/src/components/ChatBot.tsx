@@ -12,7 +12,9 @@ const makeQuestionNode = (status: number) => {
   return (
     <div className={styles.chatbotTextContainer}>
       <ChatBotIcon />
-      <div className={styles.chatbotText}>{questionStatement}</div>
+      <div className={styles.chatbotTextWrapper}>
+        <div className={styles.chatbotText}>{questionStatement}</div>
+      </div>
     </div>
   );
 };
@@ -24,7 +26,9 @@ const makeQuizNode = (status: number) => {
     <>
       <div className={styles.chatbotTextContainer}>
         <ChatBotIcon />
-        <div className={styles.chatbotText}>{quizStatement}</div>
+        <div className={styles.chatbotTextWrapper}>
+          <div className={styles.chatbotText}>{quizStatement}</div>
+        </div>
       </div>
       {quizAnswerObj.map((obj, index) => {
         return (
@@ -43,7 +47,9 @@ const makeEncouragementNode = (status: number) => {
   return (
     <div className={styles.chatbotTextContainer}>
       <ChatBotIcon />
-      <div className={styles.chatbotText}>{encouragementSentence}</div>
+      <div className={styles.chatbotTextWrapper}>
+        <div className={styles.chatbotText}>{encouragementSentence}</div>
+      </div>
     </div>
   );
 };
@@ -81,7 +87,6 @@ export const ChatBot = () => {
   };
 
   const answer = () => {
-    console.log("answered");
     //TODO: 正解不正解での分岐
     if (true) {
       setCurrentStatus(currentStatus + 1);

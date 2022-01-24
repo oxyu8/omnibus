@@ -1,6 +1,7 @@
 .container {
   background-color: #f5f6f8;
-  width: 500px;
+  width: 600px;
+  padding: 10px
 }
 
 .replyButtonWrapper {
@@ -22,7 +23,12 @@
   display: flex;
   align-items:center,
 }
+.chatbotTextWrapper {
+  margin-left: 10px;
+}
 
 .chatbotText {
-  padding-left: 10px;
+  padding: 10px;
+  background-color: white;
+  border-radius: 10px;
 }
