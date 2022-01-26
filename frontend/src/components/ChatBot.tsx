@@ -1,70 +1,27 @@
-import { useState } from "react";
+import { stat } from "fs";
+import { ChangeEventHandler, useState } from "react";
 import { getEncouragementSentence } from "../../core/encouragement";
 import { getQuestionSentence } from "../../core/question";
 import { getQuizAnswerObj, getQuizStatement } from "../../core/quiz";
 import styles from "../styles/components/ChatBot.module.scss";
 import { ChatBotIcon } from "./ChatBotIcon";
+import { Encouragement } from "./ChatBotReply/Encouragement";
+import { Index } from "./ChatBotReply/Index";
+import { Question } from "./ChatBotReply/Question";
+import { Quiz } from "./ChatBotReply/Quiz";
+import { Buttons } from "./UserReply/Buttons";
 
-type ChatBotReplyType = "question" | "quiz" | "encouragement";
+export type ChatBotReplyType = "question" | "quiz" | "encouragement";
 
-const makeQuestionNode = (status: number) => {
-  const questionStatement = getQuestionSentence(status);
-  return (
-    <div className={styles.chatbotTextContainer}>
-      <ChatBotIcon />
-      <div className={styles.chatbotTextWrapper}>
-        <div className={styles.chatbotText}>{questionStatement}</div>
-      </div>
-    </div>
-  );
-};
-
-const makeQuizNode = (status: number) => {
-  const quizStatement = getQuizStatement(status);
-  const quizAnswerObj = getQuizAnswerObj(status);
-  return (
-    <>
-      <div className={styles.chatbotTextContainer}>
-        <ChatBotIcon />
-        <div className={styles.chatbotTextWrapper}>
-          <div className={styles.chatbotText}>{quizStatement}</div>
-        </div>
-      </div>
-      {quizAnswerObj.map((obj, index) => {
-        return (
-          <div key={index} style={{ display: "flex" }}>
-            <input type="checkbox" />
-            <div>{obj.sentence}</div>
-          </div>
-        );
-      })}
-    </>
-  );
-};
-
-const makeEncouragementNode = (status: number) => {
-  const encouragementSentence = getEncouragementSentence(status);
-  return (
-    <div className={styles.chatbotTextContainer}>
-      <ChatBotIcon />
-      <div className={styles.chatbotTextWrapper}>
-        <div className={styles.chatbotText}>{encouragementSentence}</div>
-      </div>
-    </div>
-  );
-};
-
-const generateChatReply = (type: ChatBotReplyType, status: number) => {
-  if (type === "question") {
-    return makeQuestionNode(status);
-  }
-  if (type === "quiz") {
-    return makeQuizNode(status);
-  }
-  if (type === "encouragement") {
-    return makeEncouragementNode(status);
-  }
-};
+// const generateChatReply = (type: ChatBotReplyType, status: number) => {
+//   if (type === "question") {
+//     return Question(status);
+//   } else if (type === "quiz") {
+//     return Quiz(status);
+//   } else if (type === "encouragement") {
+//     return Encouragement(status);
+//   }
+// };
 
 export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
@@ -96,37 +53,19 @@ export const ChatBot = () => {
       ]);
     }
   };
-
-  const generateReplyButton = (type: ChatBotReplyType) => {
-    if (type === "question") {
-      return (
-        <>
-          <button className={styles.answerButton} onClick={clickYesBtn}>
-            知っている
-          </button>
-          <button className={styles.answerButton} onClick={clickNoBtn}>
-            知らない
-          </button>
-        </>
-      );
-    }
-    if (type === "quiz") {
-      return (
-        <button className={styles.answerButton} onClick={answer}>
-          回答する
-        </button>
-      );
-    }
-  };
-
   return (
     <div className={styles.container}>
       {interactionList.map((interaction, index) => {
         return (
           <div key={index}>
-            {generateChatReply(interaction.type, interaction.status)}
+            <Index type={interaction.type} status={interaction.status} />
             <div className={styles.replyButtonWrapper}>
-              {generateReplyButton(interaction.type)}
+              <Buttons
+                type={interaction.type}
+                clickYesBtn={clickYesBtn}
+                clickNoBtn={clickNoBtn}
+                answer={answer}
+              />
             </div>
           </div>
         );
