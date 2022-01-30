@@ -1,27 +1,9 @@
-import { stat } from "fs";
 import { ChangeEventHandler, useState } from "react";
-import { getEncouragementSentence } from "../../core/encouragement";
-import { getQuestionSentence } from "../../core/question";
-import { getQuizAnswerObj, getQuizStatement } from "../../core/quiz";
 import styles from "../styles/components/ChatBot.module.scss";
-import { ChatBotIcon } from "./ChatBotIcon";
-import { Encouragement } from "./ChatBotReply/Encouragement";
 import { Index } from "./ChatBotReply/Index";
-import { Question } from "./ChatBotReply/Question";
-import { Quiz } from "./ChatBotReply/Quiz";
 import { Buttons } from "./UserReply/Buttons";
 
 export type ChatBotReplyType = "question" | "quiz" | "encouragement";
-
-// const generateChatReply = (type: ChatBotReplyType, status: number) => {
-//   if (type === "question") {
-//     return Question(status);
-//   } else if (type === "quiz") {
-//     return Quiz(status);
-//   } else if (type === "encouragement") {
-//     return Encouragement(status);
-//   }
-// };
 
 export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
