@@ -1,18 +1,33 @@
-import { useState } from "react";
-import { getQuizAnswerObj, getQuizStatement } from "../../../core/quiz";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styles from "../../styles/components/ChatBotReply/Quiz.module.scss";
 import { ChatBotIcon } from "../ChatBotIcon";
-
+import { Quiz as QuizType } from "../../types/quiz";
 type Props = {
   status: number;
+  checkAnswer: Dispatch<SetStateAction<boolean>>;
 };
 
-export const Quiz: React.FC<Props> = ({ status }) => {
-  const quizStatement = getQuizStatement(status);
-  const quizAnswerObj = getQuizAnswerObj(status);
+export const Quiz: React.FC<Props> = ({ status, checkAnswer }) => {
+  const [quizData, setQuizData] = useState<QuizType>();
+  useEffect(() => {
+    (async () => {
+      const quizData = await import(`../../shared/quiz/${status}.tsx`);
+      setQuizData(quizData.data);
+    })();
+  }, [status]);
   const [selectedChoice, setSelectedChoice] = useState<number>();
 
-  const answerIndexList = getAnswerIndexList(quizAnswerObj);
+  useEffect(() => {
+    if (quizData?.isSingleCorrectAnswerQuiz) {
+      if (selectedChoice == 0) {
+        checkAnswer(true);
+      } else {
+        checkAnswer(false);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedChoice]);
+
   const selectChoice = (e: any) => {
     setSelectedChoice(e.target.value);
   };
@@ -21,10 +36,10 @@ export const Quiz: React.FC<Props> = ({ status }) => {
       <div className={styles.chatbotTextContainer}>
         <ChatBotIcon />
         <div className={styles.chatbotTextWrapper}>
-          <div className={styles.chatbotText}>{quizStatement}</div>
+          <div className={styles.chatbotText}>{quizData?.quizSentence}</div>
         </div>
       </div>
-      {quizAnswerObj.map((obj, index) => {
+      {quizData?.choiceSentenceList.map((sentence, index) => {
         return (
           <div key={index} className={styles.choice}>
             <label>
@@ -33,26 +48,13 @@ export const Quiz: React.FC<Props> = ({ status }) => {
                 value={index}
                 className={styles.radioButton}
                 onChange={selectChoice}
-                checked={index === selectedChoice}
+                checked={index == selectedChoice}
               />
             </label>
-            <div>{obj.sentence}</div>
+            <div>{sentence}</div>
           </div>
         );
       })}
     </>
   );
-};
-const getAnswerIndexList = (
-  quizAnswerObj: {
-    isAnswer: boolean;
-    sentence: string;
-  }[]
-) => {
-  const result = quizAnswerObj.map((obj, index) => {
-    if (obj.isAnswer === true) {
-      return index;
-    }
-  });
-  return result;
 };

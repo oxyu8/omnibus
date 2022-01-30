@@ -1,4 +1,4 @@
-import { getEncouragementSentence } from "../../../core/encouragement";
+import { getEncouragementSentence } from "../../shared/encouragements";
 import { ChatBotIcon } from "../ChatBotIcon";
 import styles from "../../styles/components/ChatBot.module.scss";
 

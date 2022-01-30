@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { getQuestionSentence } from "../../../core/question";
+import { getQuestionSentence } from "../../shared/questions";
 import { ChatBotIcon } from "../ChatBotIcon";
 import styles from "../../styles/components/ChatBot.module.scss";
 

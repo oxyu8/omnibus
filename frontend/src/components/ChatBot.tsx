@@ -3,13 +3,13 @@ import styles from "../styles/components/ChatBot.module.scss";
 import { Index } from "./ChatBotReply/Index";
 import { Buttons } from "./UserReply/Buttons";
 
-export type ChatBotReplyType = "question" | "quiz" | "encouragement";
-
 export const ChatBot = () => {
-  const [currentStatus, setCurrentStatus] = useState<number>(0);
+  const [currentStatus, setCurrentStatus] = useState<number>(1);
   const [interactionList, setInteractionList] = useState<any[]>([
     { type: "question", status: 0 },
   ]);
+  const [hasSelectedCorrectAnswer, setHasSelectedCorrectAnswer] =
+    useState<boolean>(false);
 
   const clickYesBtn = () => {
     setInteractionList([
@@ -26,12 +26,16 @@ export const ChatBot = () => {
   };
 
   const answer = () => {
-    //TODO: 正解不正解での分岐
-    if (true) {
+    if (hasSelectedCorrectAnswer) {
       setCurrentStatus(currentStatus + 1);
       setInteractionList([
         ...interactionList,
         { type: "question", status: currentStatus + 1 },
+      ]);
+    } else {
+      setInteractionList([
+        ...interactionList,
+        { type: "encouragement", status: currentStatus },
       ]);
     }
   };
@@ -40,7 +44,11 @@ export const ChatBot = () => {
       {interactionList.map((interaction, index) => {
         return (
           <div key={index}>
-            <Index type={interaction.type} status={interaction.status} />
+            <Index
+              type={interaction.type}
+              status={interaction.status}
+              checkAnswer={setHasSelectedCorrectAnswer}
+            />
             <div className={styles.replyButtonWrapper}>
               <Buttons
                 type={interaction.type}

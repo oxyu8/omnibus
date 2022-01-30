@@ -1,4 +1,4 @@
-import { ChatBotReplyType } from "../ChatBot";
+import { ChatBotReplyType } from "../../types/chat";
 import styles from "../../styles/components/UserReply/Buttons.module.scss";
 type Props = {
   type: ChatBotReplyType;
