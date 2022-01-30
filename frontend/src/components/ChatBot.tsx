@@ -4,7 +4,7 @@ import { Index } from "./ChatBotReply/Index";
 import { Buttons } from "./UserReply/Buttons";
 
 export const ChatBot = () => {
-  const [currentStatus, setCurrentStatus] = useState<number>(1);
+  const [currentStatus, setCurrentStatus] = useState<number>(0);
   const [interactionList, setInteractionList] = useState<any[]>([
     { type: "question", status: 0 },
   ]);

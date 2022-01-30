@@ -19,7 +19,8 @@ export const Quiz: React.FC<Props> = ({ status, checkAnswer }) => {
 
   useEffect(() => {
     if (quizData?.isSingleCorrectAnswerQuiz) {
-      if (selectedChoice == 0) {
+      const answerIndex = quizData.answerIndexList[0];
+      if (selectedChoice == answerIndex) {
         checkAnswer(true);
       } else {
         checkAnswer(false);
