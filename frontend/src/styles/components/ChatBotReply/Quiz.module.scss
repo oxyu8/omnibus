@@ -36,9 +36,11 @@
 .choice {
   display: flex;
   align-items: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .radioButton {
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
 }

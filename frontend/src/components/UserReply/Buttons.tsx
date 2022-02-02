@@ -1,4 +1,4 @@
-import { ChatBotReplyType } from "../ChatBot";
+import { ChatBotReplyType } from "../../types/chat";
 import styles from "../../styles/components/UserReply/Buttons.module.scss";
 type Props = {
   type: ChatBotReplyType;
@@ -19,6 +19,7 @@ export const Buttons: React.FC<Props> = ({
         <button className={styles.answerButton} onClick={clickYesBtn}>
           知っている
         </button>
+        <div style={{ width: 10 }} />
         <button className={styles.answerButton} onClick={clickNoBtn}>
           知らない
         </button>

@@ -1,4 +1,4 @@
-const QuestionSentenceList = [
+export const questionSentenceList = [
   "遺伝子組み換え食品とはどのようなものか知っていますか？",
   "遺伝子組み換え食品を作るメリットは何か知っていますか？",
   "遺伝子組み換えの安全性審査について理解していますか？",
@@ -8,5 +8,5 @@ const QuestionSentenceList = [
 ];
 
 export const getQuestionSentence = (index: number) => {
-  return QuestionSentenceList[index];
+  return questionSentenceList[index];
 };
