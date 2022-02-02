@@ -1,12 +1,29 @@
 .input {
-  width: 500px;
-  height: 35px;
+  width: 550px;
+  height: 38px;
   font-size: 18px;
-  padding-left: 5px;
+  padding-left: 15px;
   padding-right: 5px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px lightgray;
+}
+.input:focus {
+  outline: none;
+}
+
+.buttonWrapper {
+  position: absolute;
+  top: 20px;
+  left: 530px
 }
 
 .button {
-  width: 60px;
-  height: 40px;
+  width: 70px;
+  height: 38px;
+  background-color: white;
+  border: none;
+  border-radius: 5px;
+  color: gray;
+  cursor: pointer;
 }

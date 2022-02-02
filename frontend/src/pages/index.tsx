@@ -27,6 +27,7 @@ const Home = () => {
   };
 
   const fetchSearchResults = async (e: any) => {
+    return alert("test");
     e.preventDefault();
     const res = await axios.get("http://localhost:3001/search", {
       params: {

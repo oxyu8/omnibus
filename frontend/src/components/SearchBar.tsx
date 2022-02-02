@@ -19,9 +19,11 @@ export const SearchBar: React.FC<Props> = ({
           value={query}
           onChange={onChangeQuery}
         />
-        <button className={styles.button} type="submit" onClick={onClickBtn}>
-          検索
-        </button>
+        <div className={styles.buttonWrapper}>
+          <button className={styles.button} type="submit" onClick={onClickBtn}>
+            検索
+          </button>
+        </div>
       </form>
     </>
   );
