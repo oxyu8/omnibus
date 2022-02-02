@@ -5,9 +5,10 @@ export const ChatBotIcon = () => {
     <AiOutlineRobot
       size={40}
       style={{
-        backgroundColor: "skyblue",
+        backgroundColor: "#332E78",
         padding: 10,
         borderRadius: "50%",
+        color: "white",
       }}
     />
   );

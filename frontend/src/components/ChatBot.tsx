@@ -43,7 +43,7 @@ export const ChatBot = () => {
     <div className={styles.container}>
       {interactionList.map((interaction, index) => {
         return (
-          <div key={index}>
+          <div key={index} style={{ marginTop: 10 }}>
             <Index
               type={interaction.type}
               status={interaction.status}
