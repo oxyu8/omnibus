@@ -1,5 +1,7 @@
 import express from "express";
 import axios from "axios";
+import mysql from "mysql";
+
 require("dotenv").config();
 
 const app: express.Express = express();
@@ -15,11 +17,20 @@ app.use(
     next();
   }
 );
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: "Okyu8-0449",
+  database: "omnibus",
+});
 
-const config = {
-  host: "127.0.0.1",
-  port: 6379,
-};
+connection.connect((err) => {
+  if (err) {
+    console.log("error connecting: " + err.stack);
+    return;
+  }
+  console.log("success");
+});
 
 app.listen(3001, () => {
   console.log("Start on port 3001.");
