@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../../styles/components/ChatBotReply/Quiz.module.scss";
 import { ChatBotIcon } from "../ChatBotIcon";
 import { useQuiz } from "../hooks/useQuiz";
@@ -15,8 +15,6 @@ export const Quiz: React.FC<Props> = ({
 }) => {
   const { quizData } = useQuiz(status);
   const isSingleAnswerQuiz = quizData?.isSingleCorrectAnswerQuiz;
-  // const [hasSelectedCorrectAnswer, setHasSelectedCorrectAnswer] =
-  // useState<boolean>(false);
 
   const [checkList, setCheckList] = useState<boolean[]>([
     false,

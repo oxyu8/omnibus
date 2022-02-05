@@ -1,3 +1,5 @@
+import styles from "../styles/components/QuizList.module.scss";
+
 type Props = {
   type: "radio" | "checkbox";
   checkList: readonly boolean[];
@@ -15,13 +17,16 @@ export const QuizList: React.FC<Props> = ({
     <div>
       {sentenceList?.map((sentence, idx) => (
         <div key={idx}>
-          <label>
-            <input
-              type={type}
-              checked={checkList[idx]}
-              onClick={() => onCheck(idx)}
-            />
-            {sentence}
+          <label className={styles.choice}>
+            <div className={styles.inputWrapper}>
+              <input
+                type={type}
+                checked={checkList[idx]}
+                onClick={() => onCheck(idx)}
+                className={styles.input}
+              />
+            </div>
+            <div>{sentence}</div>
           </label>
         </div>
       ))}
