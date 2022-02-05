@@ -6,12 +6,17 @@ import { QuizList } from "../QuizList";
 
 type Props = {
   status: number;
-  checkAnswer: Dispatch<SetStateAction<boolean>>;
+  setHasSelectedCorrectAnswer: any;
 };
 
-export const Quiz: React.FC<Props> = ({ status, checkAnswer }) => {
+export const Quiz: React.FC<Props> = ({
+  status,
+  setHasSelectedCorrectAnswer,
+}) => {
   const { quizData } = useQuiz(status);
   const isSingleAnswerQuiz = quizData?.isSingleCorrectAnswerQuiz;
+  // const [hasSelectedCorrectAnswer, setHasSelectedCorrectAnswer] =
+  // useState<boolean>(false);
 
   const [checkList, setCheckList] = useState<boolean[]>([
     false,
@@ -29,6 +34,17 @@ export const Quiz: React.FC<Props> = ({ status, checkAnswer }) => {
       setCheckList((checks) => checks.map((c, i) => (i === idx ? !c : c)));
     }
   };
+
+  useEffect(() => {
+    if (isSingleAnswerQuiz) {
+      const answerIdx = quizData.answerIndexList[0];
+      if (checkList[answerIdx] === true) {
+        setHasSelectedCorrectAnswer(true);
+      } else {
+        setHasSelectedCorrectAnswer(false);
+      }
+    }
+  }, [checkList]);
 
   return (
     <>

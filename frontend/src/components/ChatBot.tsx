@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useState } from "react";
+import { useState } from "react";
 import styles from "../styles/components/ChatBot.module.scss";
 import { Index } from "./ChatBotReply/Index";
 import { Buttons } from "./UserReply/Buttons";
@@ -47,7 +47,7 @@ export const ChatBot = () => {
             <Index
               type={interaction.type}
               status={interaction.status}
-              checkAnswer={setHasSelectedCorrectAnswer}
+              setHasSelectedCorrectAnswer={setHasSelectedCorrectAnswer}
             />
             <div className={styles.replyButtonWrapper}>
               <Buttons

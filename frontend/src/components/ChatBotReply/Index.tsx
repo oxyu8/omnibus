@@ -7,15 +7,24 @@ import { Quiz } from "./Quiz";
 type Props = {
   type: ChatBotReplyType;
   status: number;
-  checkAnswer: Dispatch<SetStateAction<boolean>>;
+  setHasSelectedCorrectAnswer: any;
 };
 
-export const Index: React.FC<Props> = ({ type, status, checkAnswer }) => {
+export const Index: React.FC<Props> = ({
+  type,
+  status,
+  setHasSelectedCorrectAnswer,
+}) => {
   if (type === "question") {
     return <Question status={status} />;
   }
   if (type === "quiz") {
-    return <Quiz status={status} checkAnswer={checkAnswer} />;
+    return (
+      <Quiz
+        status={status}
+        setHasSelectedCorrectAnswer={setHasSelectedCorrectAnswer}
+      />
+    );
   }
   if (type === "encouragement") {
     return <Encouragement status={status} />;
