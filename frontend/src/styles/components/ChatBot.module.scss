@@ -1,7 +1,10 @@
 .container {
   background-color: #f5f6f8;
   width: 600px;
-  padding: 10px
+  height: 900px;
+  padding: 10px;
+  overflow: scroll;
+  border-radius: 10px;
 }
 
 .replyButtonWrapper {

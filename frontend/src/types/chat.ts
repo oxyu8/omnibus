@@ -1,1 +1,6 @@
-export type ChatBotReplyType = "question" | "quiz" | "encouragement";
+export type ChatBotReplyType =
+  | "question"
+  | "quiz"
+  | "encouragement"
+  | "retryMessage"
+  | "answer";

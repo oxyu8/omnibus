@@ -7,11 +7,13 @@ import { QuizList } from "../QuizList";
 type Props = {
   status: number;
   setHasSelectedCorrectAnswer: any;
+  setIsSelectedItem: any;
 };
 
 export const Quiz: React.FC<Props> = ({
   status,
   setHasSelectedCorrectAnswer,
+  setIsSelectedItem,
 }) => {
   const { quizData } = useQuiz(status);
   const isSingleAnswerQuiz = quizData?.isSingleCorrectAnswerQuiz;
@@ -41,6 +43,14 @@ export const Quiz: React.FC<Props> = ({
       } else {
         setHasSelectedCorrectAnswer(false);
       }
+    }
+  }, [checkList]);
+
+  useEffect(() => {
+    if (checkList.includes(true)) {
+      setIsSelectedItem(true);
+    } else {
+      setIsSelectedItem(false);
     }
   }, [checkList]);
 
