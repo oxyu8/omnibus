@@ -1,80 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import styles from "../styles/components/ChatBot.module.scss";
 import { Index } from "./ChatBotReply/Index";
-import { Buttons } from "./UserReply/Buttons";
-// import { RefObject, useRef } from "react";
-
-// // -----------------------------
-// // interface
-// // -----------------------------
-// export type IuseScrollProps = {
-//   outerContentRef: RefObject<HTMLDivElement>;
-//   innerContentRef: RefObject<HTMLDivElement>;
-//   setScrollPosition: (position: number) => void;
-//   getScrollWidth: () => number;
-// };
-//
-// // -----------------------------
-// // hooks
-// // -----------------------------
-// export const useScroll = (): IuseScrollProps => {
-//   const innerContentRef = useRef<HTMLDivElement>(null);
-//   const outerContentRef = useRef<HTMLDivElement>(null);
-//   const [height, setHeight] = useState<number>(0);
-//   /**
-//    * 画面初期化時にスライドの位置を変更する
-//    */
-//   const setScrollPosition = (position: number): void => {
-//     const outerRef = outerContentRef.current;
-//     if (outerRef) {
-//       outerRef.scrollLeft = position;
-//     }
-//   };
-//
-//   /**
-//    * 現在の要素の横幅を取得してセンターのスクロール位置を取得する
-//    */
-//   const getScrollWidth = (): number => {
-//     const innerRef = innerContentRef.current;
-//     const outerRef = outerContentRef.current;
-//
-//     if (innerRef && outerRef) {
-//       const innerWidth = innerRef.offsetWidth;
-//       const outerWidth = outerRef.offsetWidth;
-//       const innerHeight = innerRef.offsetHeight;
-//       const outerHeight = outerRef.offsetHeight;
-//       // console.log("inner", innerHeight);
-//       // console.log("outer", outerHeight);
-//       // const newH = height + innerHeight;
-//       // setHeight(newH);
-//       // console.log("height", height);
-//
-//       return (innerWidth - outerWidth) / 2;
-//     }
-//     return 0;
-//   };
-//
-//   return {
-//     innerContentRef,
-//     outerContentRef,
-//     setScrollPosition,
-//     getScrollWidth,
-//   };
-// };
+import { useQuiz } from "./hooks/useQuiz";
+import { useQuizList } from "./useQuizList";
 
 export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
   const [interactionList, setInteractionList] = useState<any[]>([
     { type: "question", status: 0 },
   ]);
-  const [hasSelectedCorrectAnswer, setHasSelectedCorrectAnswer] =
-    useState<boolean>(false);
+  const { quizData } = useQuiz(currentStatus);
+  const [chatType, setChatType] = useState<string>("question");
+  useEffect(() => {
+    const reversedList = [...interactionList].reverse();
+    setChatType(reversedList[0].type);
+  }, [interactionList]);
+
+  const { hasSelectedCorrectAnswer, checkList, render } = useQuizList(
+    "radio",
+    quizData?.choiceSentenceList
+  );
 
   const clickYesBtn = () => {
-    interactionList[0] = { type: "answer", status: currentStatus };
-    console.log("c", interactionList);
     setInteractionList([
       ...interactionList,
+      { type: "answer", status: currentStatus, text: "知っているよ" },
       { type: "quiz", status: currentStatus },
     ]);
   };
@@ -87,13 +37,14 @@ export const ChatBot = () => {
   };
 
   const answer = () => {
-    if (!isSelectedItem) {
-      return alert("回答を選択してください");
-    }
+    // if (!isSelectedItem) {
+    //   return alert("回答を選択してください");
+    // }
     if (hasSelectedCorrectAnswer) {
       setCurrentStatus(currentStatus + 1);
       setInteractionList([
         ...interactionList,
+        { type: "answer", status: currentStatus + 1, text: "test" },
         { type: "question", status: currentStatus + 1 },
       ]);
     } else {
@@ -110,10 +61,6 @@ export const ChatBot = () => {
     ]);
   };
 
-  // const scroll = useScroll();
-  // useEffect(() => {
-  // scroll.getScrollWidth();
-  // }, [scroll]);
   const [isSelectedItem, setIsSelectedItem] = useState<boolean>(false);
   return (
     <div className={styles.container}>
@@ -123,23 +70,57 @@ export const ChatBot = () => {
             <Index
               type={interaction.type}
               status={interaction.status}
-              setHasSelectedCorrectAnswer={setHasSelectedCorrectAnswer}
+              text={interaction?.text}
+              // setHasSelectedCorrectAnswer={setHasSelectedCorrectAnswer}
               setIsSelectedItem={setIsSelectedItem}
             />
-            <div className={styles.replyButtonWrapper}>
-              <Buttons
-                interactionListLen={interactionList.length}
-                idx={index}
-                type={interaction.type}
-                clickYesBtn={clickYesBtn}
-                clickNoBtn={clickNoBtn}
-                answer={answer}
-                tryAgain={tryAgain}
-              />
-            </div>
           </div>
         );
       })}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 50,
+          width: 550,
+        }}
+      >
+        {chatType === "question" ? (
+          <div className={styles.replyButtonWrapper}>
+            <button
+              onClick={clickYesBtn}
+              style={{
+                backgroundColor: "#3D78EA",
+                padding: 10,
+                borderRadius: 10,
+                cursor: "pointer",
+                color: "white",
+                border: "none",
+              }}
+            >
+              知っている
+            </button>
+            <div style={{ height: 10 }} />
+            <button
+              onClick={clickNoBtn}
+              style={{
+                backgroundColor: "#3D78EA",
+                padding: 10,
+                borderRadius: 10,
+                cursor: "pointer",
+                color: "white",
+                border: "none",
+              }}
+            >
+              知らない
+            </button>
+          </div>
+        ) : (
+          <div>
+            {quizData?.choiceSentenceList && render()}
+            <button onClick={answer}>回答する</button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

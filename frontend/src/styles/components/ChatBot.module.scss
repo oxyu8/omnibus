@@ -1,5 +1,5 @@
 .container {
-  background-color: #f5f6f8;
+  background-color: white;
   width: 600px;
   height: 900px;
   padding: 10px;
@@ -9,10 +9,15 @@
 
 .replyButtonWrapper {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
   margin-top: 20px;
   margin-bottom: 10px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 3px 3px rgb(240, 240, 240);
 }
+
 
 .answerButton {
   background-color: skyblue;
@@ -34,6 +39,7 @@
   padding: 10px;
   background-color: white;
   border-radius: 10px;
+  box-shadow: 2px 2px rgb(240, 240, 240);
 }
 
 .choice {
