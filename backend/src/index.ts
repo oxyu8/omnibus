@@ -17,20 +17,20 @@ app.use(
     next();
   }
 );
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "Okyu8-0449",
-  database: "omnibus",
-});
-
-connection.connect((err) => {
-  if (err) {
-    console.log("error connecting: " + err.stack);
-    return;
-  }
-  console.log("success");
-});
+// const connection = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "Okyu8-0449",
+//   database: "omnibus",
+// });
+//
+// connection.connect((err) => {
+//   if (err) {
+//     console.log("error connecting: " + err.stack);
+//     return;
+//   }
+//   console.log("success");
+// });
 
 app.listen(3001, () => {
   console.log("Start on port 3001.");

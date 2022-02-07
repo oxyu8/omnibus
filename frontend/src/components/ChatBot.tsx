@@ -3,6 +3,7 @@ import styles from "../styles/components/ChatBot.module.scss";
 import { Index } from "./ChatBotReply/Index";
 import { useQuiz } from "./hooks/useQuiz";
 import { useQuizList } from "./useQuizList";
+import { Button } from "@nextui-org/react";
 
 export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
@@ -86,33 +87,9 @@ export const ChatBot = () => {
       >
         {chatType === "question" ? (
           <div className={styles.replyButtonWrapper}>
-            <button
-              onClick={clickYesBtn}
-              style={{
-                backgroundColor: "#3D78EA",
-                padding: 10,
-                borderRadius: 10,
-                cursor: "pointer",
-                color: "white",
-                border: "none",
-              }}
-            >
-              知っている
-            </button>
+            <Button onClick={clickYesBtn}>知っている</Button>
             <div style={{ height: 10 }} />
-            <button
-              onClick={clickNoBtn}
-              style={{
-                backgroundColor: "#3D78EA",
-                padding: 10,
-                borderRadius: 10,
-                cursor: "pointer",
-                color: "white",
-                border: "none",
-              }}
-            >
-              知らない
-            </button>
+            <Button>知らない</Button>
           </div>
         ) : (
           <div>
