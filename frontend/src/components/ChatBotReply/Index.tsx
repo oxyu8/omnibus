@@ -15,12 +15,16 @@ export const Index: React.FC<Props> = ({ type, status, answerList }) => {
   if (type === "question" || type === "quiz" || type === "encouragement") {
     return <ChatMessage status={status} type={type} />;
   }
-  // if (type === "retryMessage") {
-  //   return <RetryMessage status={status} />;
-  // }
   if (type === "answer") {
     return (
-      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "flex-end",
+          flexDirection: "column",
+          alignItems: "flex-end",
+        }}
+      >
         {answerList?.map((answer, idx) => (
           <Card
             css={{
@@ -29,6 +33,8 @@ export const Index: React.FC<Props> = ({ type, status, answerList }) => {
               color: "white",
               backgroundColor: "$primary",
               borderBottomRightRadius: 0,
+              marginTop: 10,
+              marginBottom: 10,
             }}
             key={idx}
           >
