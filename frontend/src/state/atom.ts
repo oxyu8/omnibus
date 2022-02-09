@@ -5,6 +5,11 @@ const { persistAtom } = recoilPersist();
 
 export const chatMessageListState = atom({
   key: "chatMessageList",
-  default: [{ type: "question", status: 0, replyMessageList: [""] }],
+  default: [
+    {
+      text: "遺伝子組み換え食品とはどのようなものか知っていますか？",
+      type: "chatBot",
+    },
+  ],
   effects_UNSTABLE: [persistAtom],
 });

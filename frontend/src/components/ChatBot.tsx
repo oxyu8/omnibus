@@ -8,6 +8,10 @@ import { Button } from "@nextui-org/react";
 // state
 import { useRecoilState } from "recoil";
 import { chatMessageListState } from "../state/atom";
+import { getQuestionSentence } from "../shared/questions";
+import { getEncouragementSentence } from "../shared/encouragements";
+import { ChatBotReplyType } from "../types/chat";
+import React from "react";
 
 export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
@@ -16,104 +20,110 @@ export const ChatBot = () => {
   const { quizData } = useQuiz(currentStatus);
   const [chatType, setChatType] = useState<string>("question");
 
-  useEffect(() => {
-    const reversedList = [...chatMessageList].reverse();
-    setChatType(reversedList[0].type);
-    console.log("aaaaaaaa", chatMessageList);
-  }, [chatMessageList]);
-
   const { hasSelectedCorrectAnswer, checkList, render } = useQuizList(quizData);
   const { selectedAnswerList } = useSelectedAnswerList(quizData, checkList);
 
+  const generateMessage = (typeList: ChatBotReplyType[], status: number) => {
+    const messageList = typeList.map((t) => {
+      switch (t) {
+        case "question": {
+          const questionStatement = getQuestionSentence(status);
+          return { text: questionStatement, type: "chatBot" };
+        }
+        case "quiz": {
+          return { text: quizData?.quizSentence, type: "chatBot" };
+        }
+        case "encouragement": {
+          const encouragementSentence = getEncouragementSentence(status);
+          return { text: encouragementSentence, type: "chatBot" };
+        }
+        case "correct": {
+          return { text: "正解です！", type: "chatBot" };
+        }
+        case "incorrect": {
+          return { text: "不正解です！", type: "chatBot" };
+        }
+
+        case "know": {
+          return { text: "知っている", type: "user" };
+        }
+        case "unknow": {
+          return { text: "知らない", type: "user" };
+        }
+        case "userAnswer": {
+          return { text: selectedAnswerList, type: "user" };
+        }
+      }
+    });
+    return messageList;
+  };
+
   const clickYesBtn = () => {
-    setChatMessageList([
-      ...chatMessageList,
-      {
-        type: "userReply",
-        status: currentStatus,
-        replyMessageList: ["知っている"],
-      },
-      { type: "quiz", status: currentStatus, replyMessageList: undefined },
-    ]);
+    const messageList = generateMessage(["know", "quiz"], currentStatus);
+    setChatMessageList([...chatMessageList, ...messageList]);
+    setChatType("quiz");
   };
 
   const clickNoBtn = () => {
-    setChatMessageList([
-      ...chatMessageList,
-      {
-        type: "userReply",
-        status: currentStatus,
-        replyMessageList: ["知らない"],
-      },
-      {
-        type: "encouragement",
-        status: currentStatus,
-        replyMessageList: undefined,
-      },
-    ]);
+    const messageList = generateMessage(
+      ["unknow", "encouragement"],
+      currentStatus
+    );
+    setChatMessageList([...chatMessageList, ...messageList]);
+    setChatType("try");
   };
 
   const answer = () => {
     if (hasSelectedCorrectAnswer) {
       if (currentStatus <= 4) {
-        setCurrentStatus(currentStatus + 1);
-        setChatMessageList([
-          ...chatMessageList,
-          {
-            type: "userReply",
-            status: currentStatus + 1,
-            replyMessageList: selectedAnswerList,
-          },
-          {
-            type: "correct",
-            status: currentStatus + 1,
-            replyMessageList: undefined,
-          },
-          {
-            type: "question",
-            status: currentStatus + 1,
-            replyMessageList: undefined,
-          },
-        ]);
+        setChatType("question");
+        const newStatus = currentStatus + 1;
+        setCurrentStatus(newStatus);
+        const messageList = generateMessage(
+          ["userAnswer", "correct", "question"],
+          currentStatus
+        );
+        setChatMessageList([...chatMessageList, ...messageList]);
       } else {
-        setChatMessageList([
-          ...chatMessageList,
-          {
-            type: "userReply",
-            status: currentStatus + 1,
-            replyMessageList: selectedAnswerList,
-          },
-          {
-            type: "correct",
-            status: currentStatus + 1,
-            replyMessageList: undefined,
-          },
-        ]);
+        const newStatus = currentStatus + 1;
+        setCurrentStatus(newStatus);
+        const messageList = generateMessage(
+          ["userAnswer", "correct", "question"],
+          currentStatus
+        );
+        setChatMessageList([...chatMessageList, ...messageList]);
       }
     } else {
-      setChatMessageList([
-        ...chatMessageList,
-        {
-          type: "userReply",
-          status: currentStatus,
-          replyMessageList: selectedAnswerList,
-        },
-        {
-          type: "incorrect",
-          status: currentStatus,
-          replyMessageList: undefined,
-        },
-        {
-          type: "encouragement",
-          status: currentStatus,
-          replyMessageList: undefined,
-        },
-      ]);
+      const messageList = generateMessage(
+        ["userAnswer", "incorrect", "encouragement"],
+        currentStatus
+      );
+      setChatMessageList([...chatMessageList, ...messageList]);
     }
   };
   const tryQuiz = () => {
+    const messageList = generateMessage(["quiz"], currentStatus);
+    setChatMessageList([...chatMessageList, ...messageList]);
     setChatType("quiz");
   };
+
+  // ref を作成しスクロールさせたい場所にある Element にセット
+  const ref = React.createRef<HTMLDivElement>();
+  // このコールバックを呼び出して ref.current.scrollIntoView() を呼び出してスクロール
+  const scrollToBottomOfList = React.useCallback(() => {
+    ref!.current!.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref]);
+
+  // useEffect() 内はページが描画されたあとに呼び出される
+  React.useEffect(() => {
+    // ページが描画されたらリストの末尾までスクロール
+    scrollToBottomOfList();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [chatMessageList]);
 
   return (
     <>
@@ -128,10 +138,11 @@ export const ChatBot = () => {
           {chatMessageList.map((chatMessage, index) => {
             return (
               <div key={index} style={{ marginTop: 10 }}>
-                <Chat
-                  type={chatMessage.type}
-                  status={chatMessage.status}
-                  replyMessageList={chatMessage?.replyMessageList}
+                <Chat chatMessage={chatMessage.text} type={chatMessage.type} />
+                <div
+                  id="bottom-of-list"
+                  ref={ref}
+                  style={{ paddingBottom: 10 }}
                 />
               </div>
             );
@@ -180,7 +191,10 @@ export const ChatBot = () => {
         <Button
           onClick={() =>
             setChatMessageList([
-              { type: "question", status: 0, replyMessageList: [""] },
+              {
+                text: "遺伝子組み換え食品とはどのようなものか知っていますか？",
+                type: "chatBot",
+              },
             ])
           }
           style={{ width: "100%", marginTop: 30 }}
