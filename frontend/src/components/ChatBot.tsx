@@ -1,83 +1,117 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "../styles/components/ChatBot.module.scss";
-import { Index } from "./ChatBotReply/Index";
+import { Chat } from "./ChatBotReply/Chat";
 import { useQuiz } from "./hooks/useQuiz";
 import { useQuizList } from "./useQuizList";
 import { Button } from "@nextui-org/react";
+import { ChatBotReplyType } from "../types/chat";
 
 export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
-  const [interactionList, setInteractionList] = useState<any[]>([
-    { type: "question", status: 0 },
-  ]);
+  const [chatMessageList, setChatMessageList] = useState<
+    {
+      type: ChatBotReplyType;
+      status: number;
+      replyMessageList: string[] | undefined;
+    }[]
+  >([{ type: "question", status: 0, replyMessageList: [""] }]);
   const { quizData } = useQuiz(currentStatus);
   const [chatType, setChatType] = useState<string>("question");
-  const [selectedAnswerList, setSelectedAnswerList] = useState<string[]>();
+
   useEffect(() => {
-    const reversedList = [...interactionList].reverse();
-    console.log("type", reversedList[0].type);
+    const reversedList = [...chatMessageList].reverse();
     setChatType(reversedList[0].type);
-  }, [interactionList]);
+  }, [chatMessageList]);
 
   const { hasSelectedCorrectAnswer, checkList, render } = useQuizList(quizData);
-
-  useEffect(() => {
-    const selectedIdxList: number[] | undefined = [];
-    checkList.forEach((c, idx) => {
-      if (c === true) {
-        selectedIdxList.push(idx);
-        return idx;
-      }
-    });
-    const _selectedAnswerList: string[] = [];
-    selectedIdxList.forEach((idx) => {
-      _selectedAnswerList.push(quizData?.choiceSentenceList[idx] as string);
-    });
-    setSelectedAnswerList(_selectedAnswerList);
-  }, [checkList]);
+  const { selectedAnswerList } = useSelectedAnswerList(quizData, checkList);
 
   const clickYesBtn = () => {
-    setInteractionList([
-      ...interactionList,
-      { type: "answer", status: currentStatus, answerList: ["知っている"] },
-      { type: "quiz", status: currentStatus },
+    setChatMessageList([
+      ...chatMessageList,
+      {
+        type: "userReply",
+        status: currentStatus,
+        replyMessageList: ["知っている"],
+      },
+      { type: "quiz", status: currentStatus, replyMessageList: undefined },
     ]);
   };
 
   const clickNoBtn = () => {
-    setInteractionList([
-      ...interactionList,
-      { type: "answer", status: currentStatus, answerList: ["知らない"] },
-      { type: "encouragement", status: currentStatus },
+    setChatMessageList([
+      ...chatMessageList,
+      {
+        type: "userReply",
+        status: currentStatus,
+        replyMessageList: ["知らない"],
+      },
+      {
+        type: "encouragement",
+        status: currentStatus,
+        replyMessageList: undefined,
+      },
     ]);
   };
 
   const answer = () => {
     if (hasSelectedCorrectAnswer) {
-      setCurrentStatus(currentStatus + 1);
-      setInteractionList([
-        ...interactionList,
-        {
-          type: "answer",
-          status: currentStatus + 1,
-          answerList: selectedAnswerList,
-        },
-        { type: "question", status: currentStatus + 1 },
-      ]);
+      if (currentStatus <= 4) {
+        setCurrentStatus(currentStatus + 1);
+        setChatMessageList([
+          ...chatMessageList,
+          {
+            type: "userReply",
+            status: currentStatus + 1,
+            replyMessageList: selectedAnswerList,
+          },
+          {
+            type: "correct",
+            status: currentStatus + 1,
+            replyMessageList: undefined,
+          },
+          {
+            type: "question",
+            status: currentStatus + 1,
+            replyMessageList: undefined,
+          },
+        ]);
+      } else {
+        setChatMessageList([
+          ...chatMessageList,
+          {
+            type: "userReply",
+            status: currentStatus + 1,
+            replyMessageList: selectedAnswerList,
+          },
+          {
+            type: "correct",
+            status: currentStatus + 1,
+            replyMessageList: undefined,
+          },
+        ]);
+      }
     } else {
-      setInteractionList([
-        ...interactionList,
-        { type: "retryMessage", status: currentStatus },
+      setChatMessageList([
+        ...chatMessageList,
+        {
+          type: "userReply",
+          status: currentStatus,
+          replyMessageList: selectedAnswerList,
+        },
+        {
+          type: "incorrect",
+          status: currentStatus,
+          replyMessageList: undefined,
+        },
+        {
+          type: "encouragement",
+          status: currentStatus,
+          replyMessageList: undefined,
+        },
       ]);
     }
   };
-  const tryAgain = () => {
-    setInteractionList([
-      ...interactionList,
-      { type: "quiz", status: currentStatus },
-    ]);
-  };
-
   const tryQuiz = () => {
     setChatType("quiz");
   };
@@ -92,13 +126,13 @@ export const ChatBot = () => {
         }}
       >
         <div className={styles.chatContainer}>
-          {interactionList.map((interaction, index) => {
+          {chatMessageList.map((chatMessage, index) => {
             return (
               <div key={index} style={{ marginTop: 10 }}>
-                <Index
-                  type={interaction.type}
-                  status={interaction.status}
-                  answerList={interaction?.answerList}
+                <Chat
+                  type={chatMessage.type}
+                  status={chatMessage.status}
+                  replyMessageList={chatMessage?.replyMessageList}
                 />
               </div>
             );
@@ -147,4 +181,23 @@ export const ChatBot = () => {
       </div>
     </>
   );
+};
+
+const useSelectedAnswerList = (quizData, checkList) => {
+  const [selectedAnswerList, setSelectedAnswerList] = useState<string[]>();
+  useEffect(() => {
+    const selectedIdxList: number[] | undefined = [];
+    checkList?.forEach((c, idx) => {
+      if (c === true) {
+        selectedIdxList.push(idx);
+        return idx;
+      }
+    });
+    const _selectedAnswerList: string[] = [];
+    selectedIdxList.forEach((idx) => {
+      _selectedAnswerList.push(quizData?.choiceSentenceList[idx] as string);
+    });
+    setSelectedAnswerList(_selectedAnswerList);
+  }, [checkList]);
+  return { selectedAnswerList };
 };

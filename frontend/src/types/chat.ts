@@ -3,4 +3,7 @@ export type ChatBotReplyType =
   | "quiz"
   | "encouragement"
   | "retryMessage"
-  | "answer";
+  | "answer"
+  | "correct"
+  | "incorrect"
+  | "userReply";
