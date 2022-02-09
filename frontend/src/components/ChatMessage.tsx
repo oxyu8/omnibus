@@ -4,14 +4,16 @@ import { ChatBotIcon } from "../components/ChatBotIcon";
 import { useEffect, useState } from "react";
 import { getQuestionSentence } from "../shared/questions";
 import { getEncouragementSentence } from "../shared/encouragements";
+import { ChatBotReplyType } from "../types/chat";
 
 type Props = {
   status: number;
-  type: "question" | "quiz" | "encouragement";
+  type: ChatBotReplyType;
+  message?: string;
 };
 
-export const ChatMessage: React.FC<Props> = ({ status, type }) => {
-  const [data, setData] = useState<any>();
+export const ChatMessage: React.FC<Props> = ({ status, type, message }) => {
+  const [data, setData] = useState<any>(message);
   useEffect(() => {
     (async () => {
       if (type === "question") {
@@ -28,7 +30,13 @@ export const ChatMessage: React.FC<Props> = ({ status, type }) => {
       }
       if (type === "encouragement") {
         const encouragementSentence = getEncouragementSentence(status);
-        setData(encouragementSentence);
+        return setData(encouragementSentence);
+      }
+      if (type === "correct") {
+        return setData("正解です！");
+      }
+      if (type === "incorrect") {
+        return setData("不正解です！");
       }
     })();
   }, []);

@@ -1,21 +1,27 @@
-import { Button, Card } from "@nextui-org/react";
+import { Card } from "@nextui-org/react";
 import { ChatBotReplyType } from "../../types/chat";
 import { ChatMessage } from "../ChatMessage";
-import { RetryMessage } from "./RetryMessage";
 
 type Props = {
   type: ChatBotReplyType;
   status: number;
-  answerList?: string[];
+  replyMessageList?: string[];
 };
 
 // 表示するコンポーネントと表示する位置
+// userReply or botReply
 
-export const Index: React.FC<Props> = ({ type, status, answerList }) => {
-  if (type === "question" || type === "quiz" || type === "encouragement") {
+export const Chat: React.FC<Props> = ({ type, status, replyMessageList }) => {
+  if (
+    type === "question" ||
+    type === "quiz" ||
+    type === "encouragement" ||
+    type === "correct" ||
+    type === "incorrect"
+  ) {
     return <ChatMessage status={status} type={type} />;
   }
-  if (type === "answer") {
+  if (type === "userReply") {
     return (
       <div
         style={{
@@ -25,7 +31,7 @@ export const Index: React.FC<Props> = ({ type, status, answerList }) => {
           alignItems: "flex-end",
         }}
       >
-        {answerList?.map((answer, idx) => (
+        {replyMessageList?.map((answer, idx) => (
           <Card
             css={{
               width: "auto",
