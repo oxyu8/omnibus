@@ -1,11 +1,18 @@
-.container::-webkit-scrollbar{
+
+.chatContainer {
+  overflow-y: scroll;
+  padding-bottom: 30px;
+  -ms-overflow-style: none;
+  /* Firefox 対応 */
+  scrollbar-width: none;
+}
+.chatContainer::-webkit-scrollbar{
   display: none;
 }
 
 .replyButtonWrapper {
   display: flex;
   flex-direction: column;
-  padding: 30px;
   align-items: center;
   justify-content: flex-end;
 }

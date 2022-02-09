@@ -4,12 +4,12 @@ import { Index } from "./ChatBotReply/Index";
 import { useQuiz } from "./hooks/useQuiz";
 import { useQuizList } from "./useQuizList";
 import { Button } from "@nextui-org/react";
+import { NONAME } from "dns";
 
 export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
   const [interactionList, setInteractionList] = useState<any[]>([
     { type: "question", status: 0 },
-    // { type: "buttons", status: 0 },
   ]);
   const { quizData } = useQuiz(currentStatus);
   const [chatType, setChatType] = useState<string>("question");
@@ -26,7 +26,7 @@ export const ChatBot = () => {
   const clickYesBtn = () => {
     setInteractionList([
       ...interactionList,
-      { type: "answer", status: currentStatus, text: "知っているよ" },
+      { type: "answer", status: currentStatus, text: "知っている" },
       { type: "quiz", status: currentStatus },
     ]);
   };
@@ -34,6 +34,7 @@ export const ChatBot = () => {
   const clickNoBtn = () => {
     setInteractionList([
       ...interactionList,
+      { type: "answer", status: currentStatus, text: "知らない" },
       { type: "encouragement", status: currentStatus },
     ]);
   };
@@ -46,7 +47,7 @@ export const ChatBot = () => {
       setCurrentStatus(currentStatus + 1);
       setInteractionList([
         ...interactionList,
-        { type: "answer", status: currentStatus + 1, text: "test" },
+        { type: "answer", status: currentStatus + 1, text: "知っている" },
         { type: "question", status: currentStatus + 1 },
       ]);
     } else {
@@ -63,16 +64,6 @@ export const ChatBot = () => {
     ]);
   };
 
-  // const MockItem = ({ text }) => {
-  //   return (
-  //     <ExampleBlock height={60}>
-  //       <Text h6 size={15} color="white" style={{ margin: 0 }}>
-  //         {text}
-  //       </Text>
-  //     </ExampleBlock>
-  //   );
-  // };
-
   const [isSelectedItem, setIsSelectedItem] = useState<boolean>(false);
   return (
     <>
@@ -83,7 +74,7 @@ export const ChatBot = () => {
           width: 650,
         }}
       >
-        <div style={{ overflow: "scroll", paddingBottom: 30 }}>
+        <div className={styles.chatContainer}>
           {interactionList.map((interaction, index) => {
             return (
               <div key={index} style={{ marginTop: 10 }}>
@@ -102,7 +93,9 @@ export const ChatBot = () => {
               知っている
             </Button>
             <div style={{ height: 10 }} />
-            <Button style={{ width: 500 }}>知らない</Button>
+            <Button style={{ width: 500 }} onClick={clickNoBtn}>
+              知らない
+            </Button>
           </div>
         ) : (
           <div
