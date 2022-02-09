@@ -1,48 +1,40 @@
 import { Button, Card } from "@nextui-org/react";
 import { ChatBotReplyType } from "../../types/chat";
-import { AnswerButtons } from "../UserReply/AnswerButtons";
-import { Encouragement } from "./Encouragement";
-import { Question } from "./Question";
-import { Quiz } from "./Quiz";
+import { ChatMessage } from "../ChatMessage";
 import { RetryMessage } from "./RetryMessage";
 
 type Props = {
   type: ChatBotReplyType;
   status: number;
-  text?: string;
+  answerList?: string[];
 };
 
 // 表示するコンポーネントと表示する位置
 
-export const Index: React.FC<Props> = ({ type, status, text }) => {
-  if (type === "question") {
-    return <Question status={status} />;
+export const Index: React.FC<Props> = ({ type, status, answerList }) => {
+  if (type === "question" || type === "quiz" || type === "encouragement") {
+    return <ChatMessage status={status} type={type} />;
   }
-  // if (type === "buttons") {
-  //   return <AnswerButtons />;
+  // if (type === "retryMessage") {
+  //   return <RetryMessage status={status} />;
   // }
-  if (type === "quiz") {
-    return <Quiz status={status} />;
-  }
-  if (type === "encouragement") {
-    return <Encouragement status={status} />;
-  }
-  if (type === "retryMessage") {
-    return <RetryMessage status={status} />;
-  }
   if (type === "answer") {
     return (
       <div style={{ display: "flex", justifyContent: "flex-end" }}>
-        <Card
-          css={{
-            width: "auto",
-            color: "white",
-            backgroundColor: "$primary",
-            borderBottomRightRadius: 0,
-          }}
-        >
-          <p>{text}</p>
-        </Card>
+        {answerList?.map((answer, idx) => (
+          <Card
+            css={{
+              width: "auto",
+              maxWidth: 400,
+              color: "white",
+              backgroundColor: "$primary",
+              borderBottomRightRadius: 0,
+            }}
+            key={idx}
+          >
+            <p>{answer}</p>
+          </Card>
+        ))}
       </div>
     );
   }
