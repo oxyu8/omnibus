@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Radio, Checkbox } from "@nextui-org/react";
 
 export const useQuizList = (
-  quizData
+  quizData: any
   // sentenceList: string[] | undefined,
   // isSingleCorrectAnswerQuiz: boolean | undefined
 ) => {
@@ -34,7 +34,7 @@ export const useQuizList = (
   const render = () => {
     return (
       <div>
-        {quizData?.choiceSentenceList?.map((sentence, idx) => {
+        {quizData?.choiceSentenceList?.map((sentence: any, idx: number) => {
           if (quizData?.isSingleCorrectAnswerQuiz) {
             return (
               <Radio.Group key={idx}>

@@ -183,11 +183,11 @@ export const ChatBot = () => {
   );
 };
 
-const useSelectedAnswerList = (quizData, checkList) => {
+const useSelectedAnswerList = (quizData: any, checkList: any) => {
   const [selectedAnswerList, setSelectedAnswerList] = useState<string[]>();
   useEffect(() => {
     const selectedIdxList: number[] | undefined = [];
-    checkList?.forEach((c, idx) => {
+    checkList?.forEach((c: any, idx: number) => {
       if (c === true) {
         selectedIdxList.push(idx);
         return idx;
