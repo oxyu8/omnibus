@@ -13,6 +13,7 @@ export const SearchBar: React.FC<Props> = ({
   onClickBtn,
 }) => {
   return (
+    // TODO: ローディング
     <>
       <Input
         onKeyPress={onClickBtn}

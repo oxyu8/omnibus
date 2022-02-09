@@ -1,3 +1,4 @@
+import { Card } from "@nextui-org/react";
 import { useEffect, useState } from "react";
 import styles from "../../styles/components/ChatBotReply/Quiz.module.scss";
 import { ChatBotIcon } from "../ChatBotIcon";
@@ -13,9 +14,9 @@ export const Quiz: React.FC<Props> = ({ status }) => {
   return (
     <div className={styles.chatbotTextContainer}>
       <ChatBotIcon />
-      <div className={styles.chatbotTextWrapper}>
-        <div className={styles.chatbotText}>{quizData?.quizSentence}</div>
-      </div>
+      <Card css={{ mw: "400px", marginLeft: "10px" }}>
+        <p>{quizData?.quizSentence}</p>
+      </Card>
     </div>
   );
 };

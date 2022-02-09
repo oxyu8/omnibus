@@ -9,6 +9,7 @@ export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
   const [interactionList, setInteractionList] = useState<any[]>([
     { type: "question", status: 0 },
+    // { type: "buttons", status: 0 },
   ]);
   const { quizData } = useQuiz(currentStatus);
   const [chatType, setChatType] = useState<string>("question");
@@ -62,42 +63,65 @@ export const ChatBot = () => {
     ]);
   };
 
+  // const MockItem = ({ text }) => {
+  //   return (
+  //     <ExampleBlock height={60}>
+  //       <Text h6 size={15} color="white" style={{ margin: 0 }}>
+  //         {text}
+  //       </Text>
+  //     </ExampleBlock>
+  //   );
+  // };
+
   const [isSelectedItem, setIsSelectedItem] = useState<boolean>(false);
   return (
-    <div className={styles.container}>
-      {interactionList.map((interaction, index) => {
-        return (
-          <div key={index} style={{ marginTop: 10 }}>
-            <Index
-              type={interaction.type}
-              status={interaction.status}
-              text={interaction?.text}
-              // setHasSelectedCorrectAnswer={setHasSelectedCorrectAnswer}
-              setIsSelectedItem={setIsSelectedItem}
-            />
-          </div>
-        );
-      })}
+    <>
       <div
         style={{
-          position: "absolute",
-          bottom: 50,
-          width: 550,
+          display: "grid",
+          height: 800,
+          width: 650,
         }}
       >
+        <div style={{ overflow: "scroll", paddingBottom: 30 }}>
+          {interactionList.map((interaction, index) => {
+            return (
+              <div key={index} style={{ marginTop: 10 }}>
+                <Index
+                  type={interaction.type}
+                  status={interaction.status}
+                  text={interaction?.text}
+                />
+              </div>
+            );
+          })}
+        </div>
         {chatType === "question" ? (
           <div className={styles.replyButtonWrapper}>
-            <Button onClick={clickYesBtn}>知っている</Button>
+            <Button style={{ width: 500 }} onClick={clickYesBtn}>
+              知っている
+            </Button>
             <div style={{ height: 10 }} />
-            <Button>知らない</Button>
+            <Button style={{ width: 500 }}>知らない</Button>
           </div>
         ) : (
-          <div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
             {quizData?.choiceSentenceList && render()}
-            <button onClick={answer}>回答する</button>
+            <div style={{ marginTop: 20 }}>
+              <Button onClick={answer} style={{ width: "100%" }}>
+                回答する
+              </Button>
+            </div>
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 };

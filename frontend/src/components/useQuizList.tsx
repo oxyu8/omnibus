@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/components/QuizList.module.scss";
+import { Radio } from "@nextui-org/react";
 
 export const useQuizList = (
   type: "radio" | "checkbox",
@@ -34,29 +35,15 @@ export const useQuizList = (
     return (
       <div>
         {sentenceList?.map((sentence, idx) => (
-          <div
-            key={idx}
-            style={{
-              backgroundColor: "#e0f4fc",
-              borderRadius: 10,
-              padding: 5,
-              margin: 10,
-            }}
-          >
-            <label className={styles.choice}>
-              <div className={styles.inputWrapper}>
-                <input
-                  type={type}
-                  checked={checkList[idx]}
-                  onClick={() => handleCheckList(idx)}
-                  className={styles.input}
-                />
-              </div>
-              <div style={{ color: "#5c5c5c", fontWeight: 600 }}>
-                {sentence}
-              </div>
-            </label>
-          </div>
+          <Radio.Group key={idx}>
+            <Radio
+              checked={checkList[idx]}
+              onClick={() => handleCheckList(idx)}
+              color="success"
+            >
+              <span style={{ fontSize: 14 }}>{sentence}</span>
+            </Radio>
+          </Radio.Group>
         ))}
       </div>
     );

@@ -1,21 +1,13 @@
-.container {
-  background-color: white;
-  width: 600px;
-  height: 900px;
-  padding: 10px;
-  overflow: scroll;
-  border-radius: 10px;
+.container::-webkit-scrollbar{
+  display: none;
 }
 
 .replyButtonWrapper {
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
-  margin-bottom: 10px;
-  background-color: white;
   padding: 30px;
-  border-radius: 10px;
-  box-shadow: 3px 3px rgb(240, 240, 240);
+  align-items: center;
+  justify-content: flex-end;
 }
 
 
@@ -29,7 +21,7 @@
 
 .chatbotTextContainer {
   display: flex;
-  align-items:center,
+  align-items: flex-end,
 }
 .chatbotTextWrapper {
   margin-left: 10px;

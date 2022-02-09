@@ -1,6 +1,7 @@
 import { getQuestionSentence } from "../../shared/questions";
 import { ChatBotIcon } from "../ChatBotIcon";
 import styles from "../../styles/components/ChatBot.module.scss";
+import { Card } from "@nextui-org/react";
 
 type Props = {
   status: number;
@@ -11,9 +12,9 @@ export const Question: React.FC<Props> = ({ status }) => {
   return (
     <div className={styles.chatbotTextContainer}>
       <ChatBotIcon />
-      <div className={styles.chatbotTextWrapper}>
-        <div className={styles.chatbotText}>{questionStatement}</div>
-      </div>
+      <Card css={{ mw: "400px", marginLeft: "10px" }}>
+        <p>{questionStatement}</p>
+      </Card>
     </div>
   );
 };
