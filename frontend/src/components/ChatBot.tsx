@@ -4,23 +4,22 @@ import { Chat } from "./ChatBotReply/Chat";
 import { useQuiz } from "./hooks/useQuiz";
 import { useQuizList } from "./useQuizList";
 import { Button } from "@nextui-org/react";
-import { ChatBotReplyType } from "../types/chat";
+
+// state
+import { useRecoilState } from "recoil";
+import { chatMessageListState } from "../state/atom";
 
 export const ChatBot = () => {
   const [currentStatus, setCurrentStatus] = useState<number>(0);
-  const [chatMessageList, setChatMessageList] = useState<
-    {
-      type: ChatBotReplyType;
-      status: number;
-      replyMessageList: string[] | undefined;
-    }[]
-  >([{ type: "question", status: 0, replyMessageList: [""] }]);
+  const [chatMessageList, setChatMessageList] =
+    useRecoilState(chatMessageListState);
   const { quizData } = useQuiz(currentStatus);
   const [chatType, setChatType] = useState<string>("question");
 
   useEffect(() => {
     const reversedList = [...chatMessageList].reverse();
     setChatType(reversedList[0].type);
+    console.log("aaaaaaaa", chatMessageList);
   }, [chatMessageList]);
 
   const { hasSelectedCorrectAnswer, checkList, render } = useQuizList(quizData);
@@ -178,6 +177,16 @@ export const ChatBot = () => {
             </Button>
           </div>
         )}
+        <Button
+          onClick={() =>
+            setChatMessageList([
+              { type: "question", status: 0, replyMessageList: [""] },
+            ])
+          }
+          style={{ width: "100%", marginTop: 30 }}
+        >
+          リセットボタン
+        </Button>
       </div>
     </>
   );
