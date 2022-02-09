@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import styles from "../styles/components/QuizList.module.scss";
-import { Radio } from "@nextui-org/react";
+import { Radio, Checkbox } from "@nextui-org/react";
 
 export const useQuizList = (
-  type: "radio" | "checkbox",
-  sentenceList: string[] | undefined
+  quizData
+  // sentenceList: string[] | undefined,
+  // isSingleCorrectAnswerQuiz: boolean | undefined
 ) => {
   const [checkList, setCheckList] = useState<boolean[]>([
     false,
@@ -13,7 +13,7 @@ export const useQuizList = (
     false,
   ]);
   const handleCheckList = (idx: number) => {
-    if (true) {
+    if (quizData?.isSingleCorrectAnswerQuiz) {
       setCheckList((checks) =>
         checks.map((c, i) => (i === idx ? true : false))
       );
@@ -34,17 +34,33 @@ export const useQuizList = (
   const render = () => {
     return (
       <div>
-        {sentenceList?.map((sentence, idx) => (
-          <Radio.Group key={idx}>
-            <Radio
-              checked={checkList[idx]}
-              onClick={() => handleCheckList(idx)}
-              color="success"
-            >
-              <span style={{ fontSize: 14 }}>{sentence}</span>
-            </Radio>
-          </Radio.Group>
-        ))}
+        {quizData?.choiceSentenceList?.map((sentence, idx) => {
+          if (quizData?.isSingleCorrectAnswerQuiz) {
+            return (
+              <Radio.Group key={idx}>
+                <Radio
+                  checked={checkList[idx]}
+                  onClick={() => handleCheckList(idx)}
+                  color="success"
+                >
+                  <span style={{ fontSize: 14 }}>{sentence}</span>
+                </Radio>
+              </Radio.Group>
+            );
+          } else {
+            return (
+              <Checkbox.Group color="success" value={[]}>
+                <Checkbox
+                  checked={checkList[idx]}
+                  onClick={() => handleCheckList(idx)}
+                  color="success"
+                >
+                  <span style={{ fontSize: 14 }}>{sentence}</span>
+                </Checkbox>
+              </Checkbox.Group>
+            );
+          }
+        })}
       </div>
     );
   };

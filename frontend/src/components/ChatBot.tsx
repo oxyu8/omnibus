@@ -19,10 +19,7 @@ export const ChatBot = () => {
     setChatType(reversedList[0].type);
   }, [interactionList]);
 
-  const { hasSelectedCorrectAnswer, checkList, render } = useQuizList(
-    "radio",
-    quizData?.choiceSentenceList
-  );
+  const { hasSelectedCorrectAnswer, checkList, render } = useQuizList(quizData);
 
   useEffect(() => {
     const selectedIdxList: number[] | undefined = [];
