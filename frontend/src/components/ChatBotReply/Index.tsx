@@ -1,24 +1,42 @@
-import { Dispatch, SetStateAction } from "react";
+import { Button, Card } from "@nextui-org/react";
 import { ChatBotReplyType } from "../../types/chat";
-import { Encouragement } from "./Encouragement";
-import { Question } from "./Question";
-import { Quiz } from "./Quiz";
+import { ChatMessage } from "../ChatMessage";
+import { RetryMessage } from "./RetryMessage";
 
 type Props = {
   type: ChatBotReplyType;
   status: number;
-  checkAnswer: Dispatch<SetStateAction<boolean>>;
+  answerList?: string[];
 };
 
-export const Index: React.FC<Props> = ({ type, status, checkAnswer }) => {
-  if (type === "question") {
-    return <Question status={status} />;
+// 表示するコンポーネントと表示する位置
+
+export const Index: React.FC<Props> = ({ type, status, answerList }) => {
+  if (type === "question" || type === "quiz" || type === "encouragement") {
+    return <ChatMessage status={status} type={type} />;
   }
-  if (type === "quiz") {
-    return <Quiz status={status} checkAnswer={checkAnswer} />;
-  }
-  if (type === "encouragement") {
-    return <Encouragement status={status} />;
+  // if (type === "retryMessage") {
+  //   return <RetryMessage status={status} />;
+  // }
+  if (type === "answer") {
+    return (
+      <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        {answerList?.map((answer, idx) => (
+          <Card
+            css={{
+              width: "auto",
+              maxWidth: 400,
+              color: "white",
+              backgroundColor: "$primary",
+              borderBottomRightRadius: 0,
+            }}
+            key={idx}
+          >
+            <p>{answer}</p>
+          </Card>
+        ))}
+      </div>
+    );
   }
   return null;
 };
