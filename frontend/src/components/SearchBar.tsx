@@ -16,14 +16,13 @@ export const SearchBar: React.FC<Props> = ({
     // TODO: ローディング
     <>
       <Input
-        onKeyPress={onClickBtn}
         clearable
         contentRightStyling={false}
         value={query}
         onChange={onChangeQuery}
         style={{ width: 500 }}
         contentRight={
-          <div onClick={onClickBtn}>
+          <div onClick={onClickBtn} onKeyPress={onClickBtn}>
             <Search
               set="broken"
               size={"medium"}

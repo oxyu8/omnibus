@@ -23,12 +23,13 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState<SearchResult[]>();
 
   const changeQuery = (e: any) => {
+    console.log("e", e.target.value);
     setQuery(e.target.value);
   };
 
   const fetchSearchResults = async (e: any) => {
-    e.preventDefault();
-    // return alert("test");
+    // e.preventDefault();
+    return alert("test");
 
     const res = await axios.get("http://localhost:3001/search", {
       params: {
