@@ -28,10 +28,9 @@ const Home = () => {
   };
 
   const fetchSearchResults = async (e: any) => {
-    // e.preventDefault();
-    return alert("test");
-
-    const res = await axios.get("http://localhost:3001/search", {
+    e.preventDefault();
+    const endpoint = process.env.NEXT_PUBLIC_OMNIBUS_API_ENDPOINT;
+    const res = await axios.get(endpoint, {
       params: {
         query,
       },

@@ -37,7 +37,8 @@ app.listen(3001, () => {
 });
 
 const fetchResult = async (query: string) => {
-  const ENDPOINT = "https://api.cognitive.microsoft.com/bing/v7.0/search";
+  const ENDPOINT =
+    "https://api.cognitive.microsoft.com/bing/v7.0/search?count=50";
   const params = {
     q: query,
   };
