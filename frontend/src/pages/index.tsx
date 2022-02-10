@@ -29,6 +29,7 @@ const Home = () => {
 
   const fetchSearchResults = async (e: any) => {
     e.preventDefault();
+    console.log("hoje", process.env.HOGE);
     const endpoint = process.env.OMNIBUS_API_ENDPOINT as string;
     console.log("endpoint", endpoint);
     const res = await axios.get(endpoint, {
