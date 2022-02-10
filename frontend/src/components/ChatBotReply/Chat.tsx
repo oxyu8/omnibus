@@ -3,25 +3,19 @@ import { ChatBotReplyType } from "../../types/chat";
 import { ChatMessage } from "../ChatMessage";
 
 type Props = {
-  type: ChatBotReplyType;
-  status: number;
-  replyMessageList?: string[];
+  //TODO: 型
+  chatMessage: string;
+  type: string;
 };
 
 // 表示するコンポーネントと表示する位置
 // userReply or botReply
 
-export const Chat: React.FC<Props> = ({ type, status, replyMessageList }) => {
-  if (
-    type === "question" ||
-    type === "quiz" ||
-    type === "encouragement" ||
-    type === "correct" ||
-    type === "incorrect"
-  ) {
-    return <ChatMessage status={status} type={type} />;
+export const Chat: React.FC<Props> = ({ chatMessage, type }) => {
+  if (type === "chatBot") {
+    return <ChatMessage text={chatMessage} />;
   }
-  if (type === "userReply") {
+  if (type === "user") {
     return (
       <div
         style={{
@@ -31,7 +25,24 @@ export const Chat: React.FC<Props> = ({ type, status, replyMessageList }) => {
           alignItems: "flex-end",
         }}
       >
-        {replyMessageList?.map((answer, idx) => (
+        {Array.isArray(chatMessage) ? (
+          chatMessage.map((c, idx) => (
+            <Card
+              css={{
+                width: "auto",
+                maxWidth: 400,
+                color: "white",
+                backgroundColor: "$primary",
+                borderBottomRightRadius: 0,
+                marginTop: 10,
+                marginBottom: 10,
+              }}
+              key={idx}
+            >
+              <p>{c}</p>
+            </Card>
+          ))
+        ) : (
           <Card
             css={{
               width: "auto",
@@ -42,11 +53,10 @@ export const Chat: React.FC<Props> = ({ type, status, replyMessageList }) => {
               marginTop: 10,
               marginBottom: 10,
             }}
-            key={idx}
           >
-            <p>{answer}</p>
+            <p>{chatMessage}</p>
           </Card>
-        ))}
+        )}
       </div>
     );
   }

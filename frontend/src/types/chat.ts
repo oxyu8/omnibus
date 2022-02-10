@@ -6,4 +6,7 @@ export type ChatBotReplyType =
   | "answer"
   | "correct"
   | "incorrect"
-  | "userReply";
+  | "userReply"
+  | "know"
+  | "unknow"
+  | "userAnswer";
