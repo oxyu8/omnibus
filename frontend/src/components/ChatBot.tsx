@@ -23,49 +23,64 @@ export const ChatBot = () => {
   const { hasSelectedCorrectAnswer, checkList, render } = useQuizList(quizData);
   const { selectedAnswerList } = useSelectedAnswerList(quizData, checkList);
 
-  const generateMessage = (typeList: ChatBotReplyType[], status: number) => {
-    const messageList = typeList.map((t) => {
-      switch (t) {
-        case "question": {
+  const generateMessage = async (
+    typeList: ChatBotReplyType[],
+    status: number
+  ) => {
+    const messageList = await Promise.all(
+      typeList.map(async (t) => {
+        if (t === "question") {
           const questionStatement = getQuestionSentence(status);
           return { text: questionStatement, type: "chatBot" };
         }
-        case "quiz": {
-          return { text: quizData?.quizSentence, type: "chatBot" };
+        if (t === "quiz") {
+          const quizData = await import(`../shared/quiz/${status}.tsx`);
+          console.log("d", quizData.data);
+          return { text: quizData.data?.quizSentence, type: "chatBot" };
         }
-        case "encouragement": {
+        if (t === "encouragement") {
           const encouragementSentence = getEncouragementSentence(status);
           return { text: encouragementSentence, type: "chatBot" };
         }
-        case "correct": {
+        if (t === "correct") {
           return { text: "正解です！", type: "chatBot" };
         }
-        case "incorrect": {
+        if (t === "incorrect") {
           return { text: "不正解です！", type: "chatBot" };
         }
-
-        case "know": {
+        if (t === "know") {
           return { text: "知っている", type: "user" };
         }
-        case "unknow": {
+        if (t === "unknow") {
           return { text: "知らない", type: "user" };
         }
-        case "userAnswer": {
+        if (t === "userAnswer") {
           return { text: selectedAnswerList, type: "user" };
         }
+      })
+    );
+    // 配列内の配列を展開する
+    const resultList = [];
+    messageList.map((m) => {
+      if (Array.isArray(m)) {
+        m.forEach((n) => {
+          resultList.push(n);
+        });
+      } else {
+        resultList.push(m);
       }
     });
-    return messageList;
+    return resultList;
   };
 
-  const clickYesBtn = () => {
-    const messageList = generateMessage(["know", "quiz"], currentStatus);
+  const clickYesBtn = async () => {
+    const messageList = await generateMessage(["know", "quiz"], currentStatus);
     setChatMessageList([...chatMessageList, ...messageList]);
     setChatType("quiz");
   };
 
-  const clickNoBtn = () => {
-    const messageList = generateMessage(
+  const clickNoBtn = async () => {
+    const messageList = await generateMessage(
       ["unknow", "encouragement"],
       currentStatus
     );
@@ -73,22 +88,20 @@ export const ChatBot = () => {
     setChatType("try");
   };
 
-  const answer = () => {
+  const answer = async () => {
     if (hasSelectedCorrectAnswer) {
       if (currentStatus <= 4) {
         setChatType("question");
         const newStatus = currentStatus + 1;
         setCurrentStatus(newStatus);
-        const messageList = generateMessage(
+        const messageList = await generateMessage(
           ["userAnswer", "correct", "question"],
-          currentStatus
+          newStatus
         );
         setChatMessageList([...chatMessageList, ...messageList]);
       } else {
-        const newStatus = currentStatus + 1;
-        setCurrentStatus(newStatus);
         const messageList = generateMessage(
-          ["userAnswer", "correct", "question"],
+          ["userAnswer", "correct"],
           currentStatus
         );
         setChatMessageList([...chatMessageList, ...messageList]);
@@ -101,15 +114,13 @@ export const ChatBot = () => {
       setChatMessageList([...chatMessageList, ...messageList]);
     }
   };
-  const tryQuiz = () => {
-    const messageList = generateMessage(["quiz"], currentStatus);
+  const tryQuiz = async () => {
+    const messageList = await generateMessage(["quiz"], currentStatus);
     setChatMessageList([...chatMessageList, ...messageList]);
     setChatType("quiz");
   };
 
-  // ref を作成しスクロールさせたい場所にある Element にセット
   const ref = React.createRef<HTMLDivElement>();
-  // このコールバックを呼び出して ref.current.scrollIntoView() を呼び出してスクロール
   const scrollToBottomOfList = React.useCallback(() => {
     ref!.current!.scrollIntoView({
       behavior: "smooth",
