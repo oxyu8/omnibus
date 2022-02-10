@@ -7,14 +7,14 @@ import { Button } from "@nextui-org/react";
 
 // state
 import { useRecoilState } from "recoil";
-import { chatMessageListState } from "../state/atom";
+import { chatMessageListState, currentStatusState } from "../state/atom";
 import { getQuestionSentence } from "../shared/questions";
 import { getEncouragementSentence } from "../shared/encouragements";
 import { ChatBotReplyType } from "../types/chat";
 import React from "react";
 
 export const ChatBot = () => {
-  const [currentStatus, setCurrentStatus] = useState<number>(0);
+  const [currentStatus, setCurrentStatus] = useRecoilState(currentStatusState);
   const [chatMessageList, setChatMessageList] =
     useRecoilState(chatMessageListState);
   const { quizData } = useQuiz(currentStatus);

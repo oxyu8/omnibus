@@ -13,3 +13,9 @@ export const chatMessageListState = atom({
   ],
   effects_UNSTABLE: [persistAtom],
 });
+
+export const currentStatusState = atom({
+  key: "currentStatus",
+  default: 0,
+  effects_UNSTABLE: [persistAtom],
+});
