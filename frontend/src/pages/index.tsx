@@ -29,7 +29,7 @@ const Home = () => {
 
   const fetchSearchResults = async (e: any) => {
     e.preventDefault();
-    const endpoint = process.env.NEXT_PUBLIC_OMNIBUS_API_ENDPOINT;
+    const endpoint = process.env.NEXT_PUBLIC_OMNIBUS_API_ENDPOINT as string;
     const res = await axios.get(endpoint, {
       params: {
         query,
