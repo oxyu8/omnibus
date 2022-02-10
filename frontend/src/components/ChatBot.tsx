@@ -35,7 +35,6 @@ export const ChatBot = () => {
         }
         if (t === "quiz") {
           const quizData = await import(`../shared/quiz/${status}.tsx`);
-          console.log("d", quizData.data);
           return { text: quizData.data?.quizSentence, type: "chatBot" };
         }
         if (t === "encouragement") {
@@ -90,7 +89,7 @@ export const ChatBot = () => {
 
   const answer = async () => {
     if (hasSelectedCorrectAnswer) {
-      if (currentStatus <= 4) {
+      if (currentStatus < 4) {
         setChatType("question");
         const newStatus = currentStatus + 1;
         setCurrentStatus(newStatus);
@@ -100,14 +99,15 @@ export const ChatBot = () => {
         );
         setChatMessageList([...chatMessageList, ...messageList]);
       } else {
-        const messageList = generateMessage(
+        const messageList = await generateMessage(
           ["userAnswer", "correct"],
           currentStatus
         );
         setChatMessageList([...chatMessageList, ...messageList]);
+        setChatType("finish");
       }
     } else {
-      const messageList = generateMessage(
+      const messageList = await generateMessage(
         ["userAnswer", "incorrect", "encouragement"],
         currentStatus
       );
@@ -185,7 +185,7 @@ export const ChatBot = () => {
               </Button>
             </div>
           </div>
-        ) : (
+        ) : chatType === "try" ? (
           <div
             style={{
               display: "flex",
@@ -196,6 +196,19 @@ export const ChatBot = () => {
           >
             <Button onClick={tryQuiz} style={{ width: "100%" }}>
               クイズに挑戦する
+            </Button>
+          </div>
+        ) : (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button disabled={true} onClick={tryQuiz} style={{ width: "100%" }}>
+              実験終了！
             </Button>
           </div>
         )}
