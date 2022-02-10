@@ -136,6 +136,15 @@ export const ChatBot = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatMessageList]);
 
+  const resetState = () => {
+    setChatMessageList([
+      {
+        text: "遺伝子組み換え食品とはどのようなものか知っていますか？",
+        type: "chatBot",
+      },
+    ]);
+    setCurrentStatus(0);
+  };
   return (
     <>
       <div
@@ -212,17 +221,7 @@ export const ChatBot = () => {
             </Button>
           </div>
         )}
-        <Button
-          onClick={() =>
-            setChatMessageList([
-              {
-                text: "遺伝子組み換え食品とはどのようなものか知っていますか？",
-                type: "chatBot",
-              },
-            ])
-          }
-          style={{ width: "100%", marginTop: 30 }}
-        >
+        <Button onClick={resetState} style={{ width: "100%", marginTop: 30 }}>
           リセットボタン
         </Button>
       </div>
