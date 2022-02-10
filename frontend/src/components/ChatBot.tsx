@@ -59,7 +59,7 @@ export const ChatBot = () => {
       })
     );
     // 配列内の配列を展開する
-    const resultList = [];
+    const resultList: any = [];
     messageList.map((m) => {
       if (Array.isArray(m)) {
         m.forEach((n) => {
@@ -146,7 +146,7 @@ export const ChatBot = () => {
         }}
       >
         <div className={styles.chatContainer}>
-          {chatMessageList.map((chatMessage, index) => {
+          {chatMessageList.map((chatMessage: any, index: number) => {
             return (
               <div key={index} style={{ marginTop: 10 }}>
                 <Chat chatMessage={chatMessage.text} type={chatMessage.type} />
