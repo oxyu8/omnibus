@@ -1,6 +1,6 @@
 import { Card } from "@nextui-org/react";
-import { ChatBotReplyType } from "../../types/chat";
-import { ChatMessage } from "../ChatMessage";
+import { ChatBotReplyType } from "../types/chat";
+import { ChatMessage } from "./ChatMessage";
 
 type Props = {
   //TODO: 型

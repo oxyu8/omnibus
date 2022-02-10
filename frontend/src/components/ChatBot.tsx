@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import styles from "../styles/components/ChatBot.module.scss";
-import { Chat } from "./ChatBotReply/Chat";
+import { Chat } from "./Chat";
 import { useQuiz } from "./hooks/useQuiz";
-import { useQuizList } from "./useQuizList";
+import { useQuizList } from "./hooks/useQuizList";
 import { Button } from "@nextui-org/react";
 
 // state
