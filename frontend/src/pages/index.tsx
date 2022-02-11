@@ -52,6 +52,7 @@ const Home = () => {
     const searchResults = res.data as SearchResult[];
     const result = removeUrls(searchResults);
     const _result = result.filter((v) => v);
+    //@ts-ignore
     setSearchResults(_result);
   };
   return (
