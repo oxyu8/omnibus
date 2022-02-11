@@ -221,9 +221,9 @@ export const ChatBot = () => {
             </Button>
           </div>
         )}
-        <Button onClick={resetState} style={{ width: "100%", marginTop: 30 }}>
+        {/* <Button onClick={resetState} style={{ width: "100%", marginTop: 30 }}>
           リセットボタン
-        </Button>
+        </Button> */}
       </div>
     </>
   );

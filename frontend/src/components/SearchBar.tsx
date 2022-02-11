@@ -21,8 +21,9 @@ export const SearchBar: React.FC<Props> = ({
         value={query}
         onChange={onChangeQuery}
         style={{ width: 500 }}
+        onContentClick={onClickBtn}
         contentRight={
-          <div onClick={onClickBtn} onKeyPress={onClickBtn}>
+          <div onClick={onClickBtn}>
             <Search
               set="broken"
               size={"medium"}
