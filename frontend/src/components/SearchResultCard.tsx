@@ -10,6 +10,7 @@ type SearchResult = {
   id: string;
   name: string;
   snippet: string;
+  url: string;
 };
 
 type Props = {
@@ -23,7 +24,7 @@ export const SearchResultCard: React.FC<Props> = ({ result }) => {
       <div style={{ width: 600 }}>
         <div className={styles.url}>{result.displayUrl}</div>
         <a
-          href={result.displayUrl}
+          href={result.url}
           className={styles.title}
           target="_blank"
           rel="noreferrer noopener"

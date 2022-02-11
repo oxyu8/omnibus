@@ -56,8 +56,8 @@ const getResult = async (req: express.Request, res: express.Response) => {
     const query = req.query.query as string;
     const result = await fetchResult(query);
     const newResponse = result.map((r: any) => {
-      const { id, name, displayUrl, snippet } = r;
-      return { id, name, displayUrl, snippet };
+      const { id, name, displayUrl, url, snippet } = r;
+      return { id, name, displayUrl, url, snippet };
     });
     const json_response = JSON.stringify(newResponse);
     res.send(json_response);
