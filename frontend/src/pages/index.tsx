@@ -43,19 +43,15 @@ const Home = () => {
 
   const fetchSearchResults = async (e: any) => {
     e.preventDefault();
-    console.log("hoje", process.env.HOGE);
     const endpoint = process.env.NEXT_PUBLIC_OMNIBUS_API_ENDPOINT as string;
-    console.log("endpoint", endpoint);
     const res = await axios.get("http://localhost:3001/search", {
       params: {
         query,
       },
     });
     const searchResults = res.data as SearchResult[];
-    console.log("res", res.data);
-    const result = removeUrls(res.data);
+    const result = removeUrls(searchResults);
     const _result = result.filter((v) => v);
-    console.log("res", result);
     setSearchResults(_result);
   };
   return (
