@@ -21,7 +21,7 @@ export const SearchBar: React.FC<Props> = ({
         value={query}
         onChange={onChangeQuery}
         style={{ width: 500 }}
-        onContentClick={onClickBtn}
+        // onContentClick={onClickBtn}
         contentRight={
           <div onClick={onClickBtn}>
             <Search
