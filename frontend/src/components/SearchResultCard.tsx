@@ -31,7 +31,7 @@ export const SearchResultCard: React.FC<Props> = ({ result }) => {
         >
           {result.name}
         </a>
-        <div>{result.snippet}</div>
+        <div className={styles.snippet}>{result.snippet}</div>
       </div>
     </div>
   );

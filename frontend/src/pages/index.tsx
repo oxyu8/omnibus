@@ -6,6 +6,8 @@ import { SearchResultCard } from "../components/SearchResultCard";
 import styles from "../styles/index.module.scss";
 import { ChatBot } from "../components/ChatBot";
 
+import { Pagination } from "@nextui-org/react";
+
 type SearchResult = {
   0: number;
   1: number;
@@ -42,11 +44,12 @@ const Home = () => {
   };
 
   const fetchSearchResults = async (e: any) => {
+    const offset = 2;
     e.preventDefault();
-    const endpoint = process.env.NEXT_PUBLIC_OMNIBUS_API_ENDPOINT as string;
     const res = await axios.get("http://localhost:3001/search", {
       params: {
         query,
+        offset,
       },
     });
     const searchResults = res.data as SearchResult[];
@@ -55,6 +58,7 @@ const Home = () => {
     //@ts-ignore
     setSearchResults(_result);
   };
+  const handleChangePage = (page: number) => {};
   return (
     <>
       <Head>
@@ -78,8 +82,15 @@ const Home = () => {
                   />
                 );
               })}
+            <Pagination
+              total={20}
+              initialPage={1}
+              onChange={handleChangePage}
+            />
           </div>
-          <ChatBot />
+          <div style={{ position: "fixed", left: 700 }}>
+            <ChatBot />
+          </div>
         </div>
       </main>
     </>
