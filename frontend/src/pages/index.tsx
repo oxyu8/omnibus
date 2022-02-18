@@ -1,10 +1,12 @@
 import Head from "next/head";
 import axios from "axios";
 import { SearchBar } from "../components/SearchBar";
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { SearchResultCard } from "../components/SearchResultCard";
 import styles from "../styles/index.module.scss";
 import { ChatBot } from "../components/ChatBot";
+// import { Pagination } from "antd";
+import { Pagination } from "@nextui-org/react";
 
 type SearchResult = {
   0: number;
@@ -22,8 +24,14 @@ type SearchResult = {
 const Home = () => {
   const [query, setQuery] = useState<string>("");
   const [searchResults, setSearchResults] = useState<SearchResult[]>();
+  console.log("render");
+
+  useEffect(() => {
+    console.log("q", query);
+  }, [searchResults]);
 
   const changeQuery = (e: any) => {
+    // inputEl.current = query;
     setQuery(e.target.value);
   };
 
@@ -41,47 +49,68 @@ const Home = () => {
     return res;
   };
 
-  const fetchSearchResults = async (e: any) => {
+  const handleSearch = (e: any) => {
     e.preventDefault();
-    const endpoint = process.env.NEXT_PUBLIC_OMNIBUS_API_ENDPOINT as string;
-    const res = await axios.get("http://localhost:3001/search", {
-      params: {
-        query,
-      },
-    });
-    const searchResults = res.data as SearchResult[];
-    const result = removeUrls(searchResults);
+    fetchSearchResults();
+  };
+  const fetchSearchResults = async (offset: number = 0) => {
+    console.log("query", query);
+    const res = await axios.get<SearchResult[]>(
+      "http://localhost:3001/search",
+      {
+        params: {
+          query,
+          offset,
+        },
+      }
+    );
+    const results = res.data;
+    const result = removeUrls(results);
     const _result = result.filter((v) => v);
     //@ts-ignore
     setSearchResults(_result);
   };
+  const handleChangePage = (page: number) => {
+    console.log(query);
+    console.log(searchResults);
+    fetchSearchResults(page);
+  };
+  const paginationMemo = useMemo(
+    () => <Pagination initialPage={1} total={50} onChange={handleChangePage} />,
+    [query]
+  );
   return (
     <>
       <Head>
         <title>System</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main>
-        <div className={styles.container}>
-          <div className={styles.leftContainer}>
-            <SearchBar
-              query={query}
-              onChangeQuery={changeQuery}
-              onClickBtn={fetchSearchResults}
-            />
-            {searchResults &&
-              searchResults.map((searchResult) => {
-                return (
-                  <SearchResultCard
-                    key={searchResult.id}
-                    result={searchResult}
-                  />
-                );
-              })}
+      <body>
+        <main>
+          <div className={styles.container}>
+            <div className={styles.leftContainer}>
+              <SearchBar
+                query={query}
+                onChangeQuery={changeQuery}
+                onClickBtn={handleSearch}
+              />
+              {searchResults &&
+                searchResults.map((searchResult) => {
+                  return (
+                    <SearchResultCard
+                      key={searchResult.id}
+                      result={searchResult}
+                    />
+                  );
+                })}
+              <div>{paginationMemo}</div>
+            </div>
+            <div style={{ position: "fixed", left: 700 }}>
+              <ChatBot />
+            </div>
           </div>
-          <ChatBot />
-        </div>
-      </main>
+        </main>
+      </body>
     </>
   );
 };

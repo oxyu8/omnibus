@@ -36,11 +36,12 @@ app.listen(3001, () => {
   console.log("Start on port 3001.");
 });
 
-const fetchResult = async (query: string) => {
-  const ENDPOINT =
-    "https://api.cognitive.microsoft.com/bing/v7.0/search?count=50";
+const fetchResult = async (query: string, offset: number) => {
+  const ENDPOINT = "https://api.cognitive.microsoft.com/bing/v7.0/search?";
   const params = {
     q: query,
+    count: 10,
+    offset: offset,
   };
   const headers = {
     "Content-Type": "application/json",
@@ -54,7 +55,8 @@ const fetchResult = async (query: string) => {
 const getResult = async (req: express.Request, res: express.Response) => {
   try {
     const query = req.query.query as string;
-    const result = await fetchResult(query);
+    const offset = Number(req.query.offset);
+    const result = await fetchResult(query, offset);
     const newResponse = result.map((r: any) => {
       const { id, name, displayUrl, url, snippet } = r;
       return { id, name, displayUrl, url, snippet };
