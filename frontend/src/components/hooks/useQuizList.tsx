@@ -43,7 +43,9 @@ export const useQuizList = (
                   onClick={() => handleCheckList(idx)}
                   color="success"
                 >
-                  <span style={{ fontSize: 14 }}>{sentence}</span>
+                  <span style={{ paddingLeft: 19, fontSize: 18 }}>
+                    {sentence}
+                  </span>
                 </Radio>
               </Radio.Group>
             );
@@ -55,7 +57,7 @@ export const useQuizList = (
                   onClick={() => handleCheckList(idx)}
                   color="success"
                 >
-                  <span style={{ fontSize: 14 }}>{sentence}</span>
+                  <span style={{ fontSize: 22 }}>{sentence}</span>
                 </Checkbox>
               </Checkbox.Group>
             );

@@ -16,7 +16,7 @@ export const ChatMessage: React.FC<Props> = ({ text }) => {
       <ChatBotIcon />
       {text && (
         <Card css={{ mw: "400px", marginLeft: "10px" }}>
-          <p>{text}</p>
+          <p style={{ fontSize: 22 }}>{text}</p>
         </Card>
       )}
     </div>

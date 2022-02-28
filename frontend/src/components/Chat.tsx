@@ -39,7 +39,7 @@ export const Chat: React.FC<Props> = ({ chatMessage, type }) => {
               }}
               key={idx}
             >
-              <p>{c}</p>
+              <p style={{ fontSize: 22 }}>{c}</p>
             </Card>
           ))
         ) : (
@@ -54,7 +54,7 @@ export const Chat: React.FC<Props> = ({ chatMessage, type }) => {
               marginBottom: 10,
             }}
           >
-            <p>{chatMessage}</p>
+            <p style={{ fontSize: 22 }}>{chatMessage}</p>
           </Card>
         )}
       </div>

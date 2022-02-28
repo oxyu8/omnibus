@@ -112,6 +112,7 @@ export const ChatBot = () => {
         currentStatus
       );
       setChatMessageList([...chatMessageList, ...messageList]);
+      setChatType("try");
     }
   };
   const tryQuiz = async () => {
@@ -170,12 +171,15 @@ export const ChatBot = () => {
         </div>
         {chatType === "question" ? (
           <div className={styles.replyButtonWrapper}>
-            <Button style={{ width: 500 }} onClick={clickYesBtn}>
-              知っている
+            <Button
+              style={{ width: 500, paddingTop: 10, paddingBottom: 10 }}
+              onClick={clickYesBtn}
+            >
+              <span style={{ fontSize: 22 }}>知っている</span>
             </Button>
             <div style={{ height: 10 }} />
             <Button style={{ width: 500 }} onClick={clickNoBtn}>
-              知らない
+              <span style={{ fontSize: 22 }}>知らない</span>
             </Button>
           </div>
         ) : chatType === "quiz" ? (
@@ -190,7 +194,7 @@ export const ChatBot = () => {
             {quizData?.choiceSentenceList && render()}
             <div style={{ marginTop: 20 }}>
               <Button onClick={answer} style={{ width: "100%" }}>
-                回答する
+                <span style={{ fontSize: 22 }}>回答する</span>
               </Button>
             </div>
           </div>
